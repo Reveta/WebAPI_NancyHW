@@ -32,10 +32,16 @@ namespace WebAPI_HW {
 
         public DinosaurModule() {
             int next = new Random().Next(0, 999999);
-            Get["/H"] = parameters => string.Format("<html><header><title>This is title</title></header><body>Hello world {0}</body></html>", next).ToString();
+            Get["/H"] = parameters => {
+                Console.WriteLine("GET /H " + next);
+                return string.Format(
+                    "<html><header><title>This is title</title></header><body>Hello world {0}</body></html>"
+                    , next).ToString();
+            };
+
             Get["/dinosaurs/{id}"] = parameters => dinosaurs[parameters.id - 1];
             Post["/dinosaurs"] = parameters => {
-                var model = this.Bind<Dinosaur>();
+                Dinosaur model = this.Bind<Dinosaur>();
                 dinosaurs.Add(model);
                 return dinosaurs.Count.ToString();
             };
